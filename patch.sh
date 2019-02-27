@@ -5,7 +5,7 @@ set -euo pipefail
 backup_path="/opt/nvidia/libnvidia-encode-backup"
 silent_flag=''
 rollback_flag=''
-driver_dir='/usr/lib/x86_64-linux-gnu'
+driver_dir="${NVIDIA_INSTALL_DIR}"
 
 print_usage() { printf '
 SYNOPSIS
@@ -83,12 +83,7 @@ declare -A object_list=(
     ["418.43"]='libnvcuvid.so'
 )
 
-NVIDIA_SMI="$(which nvidia-smi)"
-
-if ! driver_version=$("$NVIDIA_SMI" --query-gpu=driver_version --format=csv,noheader,nounits | head -n 1) ; then
-    echo 'Something went wrong. Check nvidia driver'
-    exit 1;
-fi
+driver_version=${NVIDIA_DRIVER_VERSION}
 
 echo "Detected nvidia driver version: $driver_version"
 
